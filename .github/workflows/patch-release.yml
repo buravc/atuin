@@ -1,0 +1,36 @@
+name: Patch and Release
+
+on:
+  push:
+    branches:
+      - offline-patch
+
+jobs:
+  patch-and-build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          ref: offline-patch
+          fetch-depth: 0
+
+      - name: Apply Patch
+        run: |
+          git apply ./offline-patch/atuin-offline.patch
+
+      - name: Build
+        run: |
+          cargo build --profile=dist
+          mkdir -p release
+          cp target/dist/atuin release/atuin-macos
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: auto-${{ github.run_number }}
+          name: "Auto Build ${{ github.run_number }}"
+          files: release/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

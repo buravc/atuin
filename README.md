@@ -1,3 +1,9 @@
+# Atuin Offline Fork
+
+This is a fork I have prepared to trim all online/cloud/sync related features from Atuin.
+
+Atuin is a very useful tool. Thanks a lot to all of the developers and contributors for creating and supporting Atuin.
+
 <p align="center">
  <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/atuinsh/atuin/assets/53315310/13216a1d-1ac0-4c99-b0eb-d88290fe0efd">

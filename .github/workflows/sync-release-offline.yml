@@ -1,0 +1,46 @@
+# name: Sync, Patch, Build and Release
+
+# on:
+#   schedule:
+#     - cron: '0 * * * *'
+
+# jobs:
+#   patch-and-build:
+#     runs-on: macos-latest
+
+#     steps:
+#       - name: Checkout main branch
+#         uses: actions/checkout@v3
+#         with:
+#           ref: main
+#           fetch-depth: 0
+
+#       - name: Setup Git and Apply Patch
+#         run: |
+#           git config user.name "GitHub Actions"
+#           git config user.email "actions@github.com"
+#           git remote add upstream https://github.com/atuinsh/atuin.git
+#           git fetch upstream
+#           git checkout main
+#           git merge upstream/main --no-edit
+#           git push origin main
+#           git checkout patched || git checkout -b patched
+#           git rebase main
+#           git apply ./offline-patch/atuin-offline.patch
+#           git add .
+#           git commit -m "Apply patch"
+#           git push origin patched --force
+
+#       - name: Build
+#         run: cargo build --profile=dist
+#           mkdir -p release
+#           cp target/dist/atuin release/atuin-macos
+
+#       - name: Create GitHub Release
+#         uses: softprops/action-gh-release@v1
+#         with:
+#           tag_name: auto-${{ github.run_number }}
+#           name: "Auto Build ${{ github.run_number }}"
+#           files: release/*
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
